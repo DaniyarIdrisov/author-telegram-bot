@@ -1,1 +1,29 @@
-
+spring:
+  application:
+    name: author-telegram-bot
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 1
+      auto-commit: false
+  jpa:
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.default_schema: author_telegram_bot
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    default-schema: author_telegram_bot
+    change-log: classpath:/liquibase/master.yml
+    database-change-log-table: _databasechangelog
+    database-change-log-lock-table: _databasechangeloglock
+bot:
+  name: AuthorEduTatarBot
+  token: 8150465755:AAH0ubEPSxyEca7OOJYQasaa2VA_8Qvzflw
