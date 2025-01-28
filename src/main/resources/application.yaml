@@ -21,7 +21,7 @@ spring:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     default-schema: author_telegram_bot
-    change-log: classpath:/liquibase/master.yml
+    change-log: classpath:/liquibase/master.yaml
     database-change-log-table: _databasechangelog
     database-change-log-lock-table: _databasechangeloglock
 bot:
