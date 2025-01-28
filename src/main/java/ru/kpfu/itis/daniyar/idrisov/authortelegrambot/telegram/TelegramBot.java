@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -44,13 +45,21 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMessage(new SendMessage(chatId, TelegramConstants.INCORRECT_COMMAND));
             }
         } else if (update.hasCallbackQuery()) {
-            sendMessage(callbacksHandler.handleCallbacks(update));
+            sendDocument(callbacksHandler.handleCallbacks(update));
         }
     }
 
     private void sendMessage(SendMessage sendMessage) {
         try {
             execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void sendDocument(SendDocument sendDocument) {
+        try {
+            execute(sendDocument);
         } catch (TelegramApiException e) {
             log.error(e.getMessage());
         }

@@ -24,7 +24,7 @@ public class StartCommand implements Command {
     @Override
     public SendMessage apply(Update update) {
         long chatId = update.getMessage().getChatId();
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText(TelegramConstants.START_MESSAGE);
         addKeyboard(sendMessage);
