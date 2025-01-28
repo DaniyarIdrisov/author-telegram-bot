@@ -99,6 +99,7 @@ public class DisputeServiceImpl implements DisputeService{
 
             Cell cell4 = row.createCell(4);
             cell4.setCellValue(dispute.getType().getTypeValue());
+            index++;
         }
     }
 
