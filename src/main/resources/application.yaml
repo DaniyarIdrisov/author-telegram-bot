@@ -25,5 +25,5 @@ spring:
     database-change-log-table: _databasechangelog
     database-change-log-lock-table: _databasechangeloglock
 bot:
-  name: AuthorEduTatarBot
-  token: 8150465755:AAH0ubEPSxyEca7OOJYQasaa2VA_8Qvzflw
+  name: AuthorTelegramBot
+  token: 7710439815:AAFAqEgBbeIIOKyHC-5dwWoWBGTpiX0QE4Q
