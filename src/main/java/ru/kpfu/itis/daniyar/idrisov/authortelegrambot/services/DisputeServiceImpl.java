@@ -24,6 +24,7 @@ import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.repositories.DisputeReposi
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -198,17 +199,95 @@ public class DisputeServiceImpl implements DisputeService{
         }
     }
 
+    @Override
+    public byte[] createXlsDisputePerformingCurrent() {
+        var disputes = repository.getDisputesByType(DisputeType.DISCUSSION_PERFORMING);
+        var file = generateXlsDisputePerformingCurrent(disputes);
+        return getDataFromXlsFile(file);
+    }
 
-    private byte[] getDataFromXlsFile(Workbook file) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (bos) {
-            file.write(bos);
-        } catch (IOException e) {
-            String msg = String.format("Возникла ошибка при генерации файла XLS, прична: %s", e.getMessage());
-            log.error(msg, e);
-            throw new XlsGenerationException(msg);
+    private Workbook generateXlsDisputePerformingCurrent(List<Dispute> disputes) {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet(DisputeType.DISCUSSION_PERFORMING.getTypeValue());
+        createColumnsDisputePerformingCurrent(sheet);
+        fillDisputesDisputePerformingCurrent(sheet, disputes);
+        return wb;
+    }
+
+    private void createColumnsDisputePerformingCurrent(Sheet sheet) {
+        Row row = sheet.createRow(0);
+
+        sheet.setColumnWidth(0, 15 * 256);
+        Cell cell0 = row.createCell(0);
+        cell0.setCellValue("Идентификатор");
+
+        sheet.setColumnWidth(1, 15 * 256);
+        Cell cell1 = row.createCell(1);
+        cell1.setCellValue("Внешний ключ");
+
+        sheet.setColumnWidth(2, 15 * 256);
+        Cell cell2 = row.createCell(2);
+        cell2.setCellValue("Описание");
+
+        sheet.setColumnWidth(3, 15 * 256);
+        Cell cell3 = row.createCell(3);
+        cell3.setCellValue("Организация");
+
+        sheet.setColumnWidth(4, 15 * 256);
+        Cell cell4 = row.createCell(4);
+        cell4.setCellValue("Тип");
+
+        sheet.setColumnWidth(5, 15 * 256);
+        Cell cell5 = row.createCell(5);
+        cell5.setCellValue("Начало обсуждения");
+
+        sheet.setColumnWidth(6, 15 * 256);
+        Cell cell6 = row.createCell(6);
+        cell6.setCellValue("Конец обсуждения");
+
+        sheet.setColumnWidth(7, 15 * 256);
+        Cell cell7 = row.createCell(7);
+        cell7.setCellValue("Количество дней");
+
+        sheet.setColumnWidth(8, 15 * 256);
+        Cell cell8 = row.createCell(8);
+        cell8.setCellValue("Осталось дней до конца экспозиции");
+    }
+
+    private void fillDisputesDisputePerformingCurrent(Sheet sheet, List<Dispute> disputes) {
+        var index = 1;
+        for (var dispute: disputes) {
+            Row row = sheet.createRow(index);
+
+            Cell cell0 = row.createCell(0);
+            cell0.setCellValue(dispute.getId().toString());
+
+            Cell cell1 = row.createCell(1);
+            cell1.setCellValue(dispute.getKey());
+
+            Cell cell2 = row.createCell(2);
+            cell2.setCellValue(dispute.getTitle());
+
+            Cell cell3 = row.createCell(3);
+            cell3.setCellValue(dispute.getOrganizationOrDepartment());
+
+            Cell cell4 = row.createCell(4);
+            cell4.setCellValue(dispute.getType().getTypeValue());
+
+            Cell cell5 = row.createCell(5);
+            cell5.setCellValue(dispute.getDisputeStartedAt().toString());
+
+            Cell cell6 = row.createCell(6);
+            cell6.setCellValue(dispute.getDisputeEndedAt().toString());
+
+            Cell cell7 = row.createCell(7);
+            cell7.setCellValue(dispute.getDisputeDays());
+
+            Cell cell8 = row.createCell(8);
+            cell8.setCellValue(ChronoUnit.DAYS.between(LocalDate.now(), dispute.getDisputeEndedAt()));
+
+            index++;
         }
-        return bos.toByteArray();
     }
 
     @Transactional
@@ -270,6 +349,18 @@ public class DisputeServiceImpl implements DisputeService{
                     .build();
         }
         repository.save(dispute);
+    }
+
+    private byte[] getDataFromXlsFile(Workbook file) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (bos) {
+            file.write(bos);
+        } catch (IOException e) {
+            String msg = String.format("Возникла ошибка при генерации файла XLS, прична: %s", e.getMessage());
+            log.error(msg, e);
+            throw new XlsGenerationException(msg);
+        }
+        return bos.toByteArray();
     }
 }
 
