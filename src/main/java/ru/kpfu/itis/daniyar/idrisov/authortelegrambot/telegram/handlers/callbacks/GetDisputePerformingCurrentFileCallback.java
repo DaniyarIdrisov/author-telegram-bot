@@ -30,7 +30,7 @@ public class GetDisputePerformingCurrentFileCallback implements Callback {
 
         var sendDocument = new SendDocument();
         sendDocument.setChatId(chatId);
-        sendDocument.setDocument(new InputFile(fileInputStream,  TelegramConstants.DISCUSSION_PERFORMING_CURRENT_CALLBACK_DATA + ".xls"));
+        sendDocument.setDocument(new InputFile(fileInputStream,  TelegramConstants.DISCUSSION_PERFORMING_CURRENT_TEXT + ".xls"));
         return sendDocument;
     }
 }
