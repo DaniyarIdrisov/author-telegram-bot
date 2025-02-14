@@ -4,7 +4,7 @@ public class TelegramConstants {
 
     public static final String START_COMMAND = "/start";
 
-    public static final String START_MESSAGE = "Выберете тип для того, чтобы отобразить нужную информацию из системы «Общественные обсуждения»";
+    public static final String START_MESSAGE = "Выберете тип для того, чтобы отобразить нужные данные из информационной системы «Общественные обсуждения»";
 
     public static final String INCORRECT_COMMAND = "Введите команду, начинающуюся с /";
 
