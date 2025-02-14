@@ -154,10 +154,10 @@ public class DisputeServiceImpl implements DisputeService{
                 cell4.setCellValue(dispute.getType().getTypeValue());
 
                 Cell cell5 = row.createCell(5);
-                cell5.setCellValue(dispute.getDisputeStartedAt());
+                cell5.setCellValue(dispute.getDisputeStartedAt().toString());
 
                 Cell cell6 = row.createCell(6);
-                cell6.setCellValue(dispute.getDisputeEndedAt());
+                cell6.setCellValue(dispute.getDisputeEndedAt().toString());
 
                 Cell cell7 = row.createCell(7);
                 cell7.setCellValue(dispute.getDisputeDays());
@@ -182,16 +182,16 @@ public class DisputeServiceImpl implements DisputeService{
                 cell4.setCellValue(dispute.getType().getTypeValue());
 
                 Cell cell5 = row.createCell(5);
-                cell5.setCellValue(dispute.getDisputeStartedAt());
+                cell5.setCellValue(dispute.getDisputeStartedAt().toString());
 
                 Cell cell6 = row.createCell(6);
-                cell6.setCellValue(dispute.getDisputeEndedAt());
+                cell6.setCellValue(dispute.getDisputeEndedAt().toString());
 
                 Cell cell7 = row.createCell(7);
-                cell7.setCellValue(dispute.getNotificationPublishedAt());
+                cell7.setCellValue(dispute.getNotificationPublishedAt().toString());
 
                 Cell cell8 = row.createCell(8);
-                cell8.setCellValue(dispute.getConclusionPublishedAt());
+                cell8.setCellValue(dispute.getConclusionPublishedAt().toString());
 
                 index++;
             }
