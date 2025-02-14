@@ -23,6 +23,7 @@ import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.repositories.DisputeReposi
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -51,56 +52,149 @@ public class DisputeServiceImpl implements DisputeService{
     private Workbook generateXls(List<Dispute> disputes, DisputeType disputeType) {
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet(disputeType.getTypeValue());
-        createColumns(sheet);
-        fillDisputes(sheet, disputes);
+        createColumns(sheet, disputeType);
+        fillDisputes(sheet, disputes, disputeType);
         return wb;
     }
 
-    private void createColumns(Sheet sheet) {
+    private void createColumns(Sheet sheet, DisputeType disputeType) {
         Row row = sheet.createRow(0);
 
-        sheet.setColumnWidth(0, 15 * 256);
-        Cell cell0 = row.createCell(0);
-        cell0.setCellValue("Идентификатор");
+        if (!DisputeType.NOTIFICATION_SHOWN.equals(disputeType)) {
+            sheet.setColumnWidth(0, 15 * 256);
+            Cell cell0 = row.createCell(0);
+            cell0.setCellValue("Идентификатор");
 
-        sheet.setColumnWidth(1, 15 * 256);
-        Cell cell1 = row.createCell(1);
-        cell1.setCellValue("Внешний ключ");
+            sheet.setColumnWidth(1, 15 * 256);
+            Cell cell1 = row.createCell(1);
+            cell1.setCellValue("Внешний ключ");
 
-        sheet.setColumnWidth(2, 15 * 256);
-        Cell cell2 = row.createCell(2);
-        cell2.setCellValue("Описание");
+            sheet.setColumnWidth(2, 15 * 256);
+            Cell cell2 = row.createCell(2);
+            cell2.setCellValue("Описание");
 
-        sheet.setColumnWidth(3, 15 * 256);
-        Cell cell3 = row.createCell(3);
-        cell3.setCellValue("Организация");
+            sheet.setColumnWidth(3, 15 * 256);
+            Cell cell3 = row.createCell(3);
+            cell3.setCellValue("Организация");
 
-        sheet.setColumnWidth(4, 15 * 256);
-        Cell cell4 = row.createCell(4);
-        cell4.setCellValue("Тип");
+            sheet.setColumnWidth(4, 15 * 256);
+            Cell cell4 = row.createCell(4);
+            cell4.setCellValue("Тип");
+
+            sheet.setColumnWidth(5, 15 * 256);
+            Cell cell5 = row.createCell(5);
+            cell5.setCellValue("Начало обсуждения");
+
+            sheet.setColumnWidth(6, 15 * 256);
+            Cell cell6 = row.createCell(6);
+            cell6.setCellValue("Конец обсуждения");
+
+            sheet.setColumnWidth(7, 15 * 256);
+            Cell cell7 = row.createCell(7);
+            cell7.setCellValue("Количество дней");
+        } else {
+            sheet.setColumnWidth(0, 15 * 256);
+            Cell cell0 = row.createCell(0);
+            cell0.setCellValue("Идентификатор");
+
+            sheet.setColumnWidth(1, 15 * 256);
+            Cell cell1 = row.createCell(1);
+            cell1.setCellValue("Внешний ключ");
+
+            sheet.setColumnWidth(2, 15 * 256);
+            Cell cell2 = row.createCell(2);
+            cell2.setCellValue("Описание");
+
+            sheet.setColumnWidth(3, 15 * 256);
+            Cell cell3 = row.createCell(3);
+            cell3.setCellValue("Департамент");
+
+            sheet.setColumnWidth(4, 15 * 256);
+            Cell cell4 = row.createCell(4);
+            cell4.setCellValue("Тип");
+
+            sheet.setColumnWidth(5, 15 * 256);
+            Cell cell5 = row.createCell(5);
+            cell5.setCellValue("Начало обсуждения");
+
+            sheet.setColumnWidth(6, 15 * 256);
+            Cell cell6 = row.createCell(6);
+            cell6.setCellValue("Конец обсуждения");
+
+            sheet.setColumnWidth(7, 15 * 256);
+            Cell cell7 = row.createCell(7);
+            cell7.setCellValue("Дата оповещения");
+
+            sheet.setColumnWidth(8, 15 * 256);
+            Cell cell8 = row.createCell(8);
+            cell8.setCellValue("Дата заключения");
+        }
     }
 
-    private void fillDisputes(Sheet sheet, List<Dispute> disputes) {
+    private void fillDisputes(Sheet sheet, List<Dispute> disputes, DisputeType disputeType) {
         var index = 1;
         for (var dispute: disputes) {
-            Row row = sheet.createRow(index);
 
-            Cell cell0 = row.createCell(0);
-            cell0.setCellValue(dispute.getId().toString());
+            if (!DisputeType.NOTIFICATION_SHOWN.equals(disputeType)) {
+                Row row = sheet.createRow(index);
 
-            Cell cell1 = row.createCell(1);
-            cell1.setCellValue(dispute.getKey());
+                Cell cell0 = row.createCell(0);
+                cell0.setCellValue(dispute.getId().toString());
 
-            Cell cell2 = row.createCell(2);
-            cell2.setCellValue(dispute.getTitle());
+                Cell cell1 = row.createCell(1);
+                cell1.setCellValue(dispute.getKey());
 
-            Cell cell3 = row.createCell(3);
-            cell3.setCellValue(dispute.getOrganization());
+                Cell cell2 = row.createCell(2);
+                cell2.setCellValue(dispute.getTitle());
 
-            Cell cell4 = row.createCell(4);
-            cell4.setCellValue(dispute.getType().getTypeValue());
+                Cell cell3 = row.createCell(3);
+                cell3.setCellValue(dispute.getOrganizationOrDepartment());
 
-            index++;
+                Cell cell4 = row.createCell(4);
+                cell4.setCellValue(dispute.getType().getTypeValue());
+
+                Cell cell5 = row.createCell(5);
+                cell5.setCellValue(dispute.getDisputeStartedAt());
+
+                Cell cell6 = row.createCell(6);
+                cell6.setCellValue(dispute.getDisputeEndedAt());
+
+                Cell cell7 = row.createCell(7);
+                cell7.setCellValue(dispute.getDisputeDays());
+
+                index++;
+            } else {
+                Row row = sheet.createRow(index);
+
+                Cell cell0 = row.createCell(0);
+                cell0.setCellValue(dispute.getId().toString());
+
+                Cell cell1 = row.createCell(1);
+                cell1.setCellValue(dispute.getKey());
+
+                Cell cell2 = row.createCell(2);
+                cell2.setCellValue(dispute.getTitle());
+
+                Cell cell3 = row.createCell(3);
+                cell3.setCellValue(dispute.getOrganizationOrDepartment());
+
+                Cell cell4 = row.createCell(4);
+                cell4.setCellValue(dispute.getType().getTypeValue());
+
+                Cell cell5 = row.createCell(5);
+                cell5.setCellValue(dispute.getDisputeStartedAt());
+
+                Cell cell6 = row.createCell(6);
+                cell6.setCellValue(dispute.getDisputeEndedAt());
+
+                Cell cell7 = row.createCell(7);
+                cell7.setCellValue(dispute.getNotificationPublishedAt());
+
+                Cell cell8 = row.createCell(8);
+                cell8.setCellValue(dispute.getConclusionPublishedAt());
+
+                index++;
+            }
         }
     }
 
@@ -151,12 +245,30 @@ public class DisputeServiceImpl implements DisputeService{
     }
 
     private void saveDispute(JsonNode json) {
-        var dispute = Dispute.builder()
-                .key(json.get("id").asText())
-                .title(json.get("dispute_info").get("title_full").asText())
-                .organization(json.get("dispute_info").get("organization").asText())
-                .type(DisputeType.valueOf(json.get("state").get("key").asText().toUpperCase()))
-                .build();
+        var type = DisputeType.valueOf(json.get("state").get("key").asText().toUpperCase());
+        Dispute dispute;
+        if (!DisputeType.NOTIFICATION_SHOWN.equals(type)) {
+            dispute = Dispute.builder()
+                    .key(json.get("id").asText())
+                    .type(type)
+                    .title(json.get("dispute_info").get("title_full").asText())
+                    .organizationOrDepartment(json.get("dispute_info").get("organization").asText())
+                    .disputeStartedAt(LocalDate.parse(json.get("dispute_info").get("dispute_started_at").asText()))
+                    .disputeEndedAt(LocalDate.parse(json.get("dispute_info").get("dispute_ended_at").asText()))
+                    .disputeDays(Integer.valueOf(json.get("dispute_info").get("dispute_days").asText()))
+                    .build();
+        } else {
+            dispute = Dispute.builder()
+                    .key(json.get("id").asText())
+                    .type(type)
+                    .title(json.get("notification").get("title_full").asText())
+                    .organizationOrDepartment(json.get("notification").get("department").asText())
+                    .disputeStartedAt(LocalDate.parse(json.get("notification").get("dispute_started_at").asText()))
+                    .disputeEndedAt(LocalDate.parse(json.get("notification").get("dispute_ended_at").asText()))
+                    .notificationPublishedAt(LocalDate.parse(json.get("notification").get("notification_published_at").asText()))
+                    .conclusionPublishedAt(LocalDate.parse(json.get("notification").get("conclusion_published_at").asText()))
+                    .build();
+        }
         repository.save(dispute);
     }
 }

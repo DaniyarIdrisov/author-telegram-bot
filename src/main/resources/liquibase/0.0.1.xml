@@ -8,18 +8,15 @@
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="key" type="varchar">
-                <constraints nullable="false"/>
-            </column>
-            <column name="title" type="varchar">
-                <constraints nullable="false"/>
-            </column>
-            <column name="organization" type="varchar">
-                <constraints nullable="false"/>
-            </column>
-            <column name="type" type="varchar">
-                <constraints nullable="false"/>
-            </column>
+            <column name="key" type="varchar"/>
+            <column name="type" type="varchar"/>
+            <column name="title" type="varchar"/>
+            <column name="organization_or_department" type="varchar"/>
+            <column name="dispute_started_at" type="date"/>
+            <column name="dispute_ended_at" type="date"/>
+            <column name="dispute_days" type="int"/>
+            <column name="notification_published_at" type="date"/>
+            <column name="conclusion_published_at" type="date"/>
         </createTable>
     </changeSet>
 

@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.models.enums.DisputeType;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -30,13 +31,28 @@ public class Dispute {
     @Column(name = "key")
     String key;
 
-    @Column(name = "title")
-    String title;
-
-    @Column(name = "organization")
-    String organization;
-
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     DisputeType type;
+
+    @Column(name = "title")
+    String title;
+
+    @Column(name = "organization_or_department")
+    String organizationOrDepartment;
+
+    @Column(name = "dispute_started_at")
+    LocalDate disputeStartedAt;
+
+    @Column(name = "dispute_ended_at")
+    LocalDate disputeEndedAt;
+
+    @Column(name = "dispute_days")
+    Integer disputeDays;
+
+    @Column(name = "notification_published_at")
+    LocalDate notificationPublishedAt;
+
+    @Column(name = "conclusion_published_at")
+    LocalDate conclusionPublishedAt;
 }

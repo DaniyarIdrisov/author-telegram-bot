@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.models.enums.DisputeType;
+import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.telegram.constants.TelegramConstants;
 import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.telegram.handlers.callbacks.Callback;
 import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.telegram.handlers.callbacks.GetDisputeFileByTypeCallback;
+import ru.kpfu.itis.daniyar.idrisov.authortelegrambot.telegram.handlers.callbacks.GetDisputePerformingCurrentFileCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +20,13 @@ public class CallbacksHandler {
 
     private final Map<String, Callback> callbacks;
 
-    public CallbacksHandler(@Autowired GetDisputeFileByTypeCallback getDisputeFileByTypeCallback) {
+    public CallbacksHandler(@Autowired GetDisputeFileByTypeCallback getDisputeFileByTypeCallback,
+                            @Autowired GetDisputePerformingCurrentFileCallback getDisputePerformingCurrentFileCallback) {
         this.callbacks = new HashMap<>();
         for (var disputeType : DisputeType.values()) {
             callbacks.put(disputeType.name(), getDisputeFileByTypeCallback);
         }
+        callbacks.put(TelegramConstants.DISCUSSION_PERFORMING_CURRENT_CALLBACK_DATA, getDisputePerformingCurrentFileCallback);
     }
 
     public SendDocument handleCallbacks(Update update) {

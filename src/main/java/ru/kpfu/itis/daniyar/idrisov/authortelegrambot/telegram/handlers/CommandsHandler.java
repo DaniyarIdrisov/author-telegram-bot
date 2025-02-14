@@ -18,7 +18,7 @@ public class CommandsHandler {
     private final Map<String, Command> commands;
 
     public CommandsHandler(@Autowired StartCommand startCommand) {
-        this.commands = Map.of("/start", startCommand);
+        this.commands = Map.of(TelegramConstants.START_COMMAND, startCommand);
     }
 
     public SendMessage handleCommands(Update update) {

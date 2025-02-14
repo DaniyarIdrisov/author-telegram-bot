@@ -35,11 +35,16 @@ public class StartCommand implements Command {
         var inlineKeyboardMarkup = new InlineKeyboardMarkup();
         var keyboardButtonsRow = new ArrayList<InlineKeyboardButton>();
         for (var disputeType : DisputeType.values()) {
-            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+            var inlineKeyboardButton = new InlineKeyboardButton();
             inlineKeyboardButton.setText(disputeType.getTypeValue());
             inlineKeyboardButton.setCallbackData(disputeType.name());
             keyboardButtonsRow.add(inlineKeyboardButton);
         }
+        var inlineKeyboardButton = new InlineKeyboardButton();
+        inlineKeyboardButton.setText(TelegramConstants.DISCUSSION_PERFORMING_CURRENT_TEXT);
+        inlineKeyboardButton.setCallbackData(TelegramConstants.DISCUSSION_PERFORMING_CURRENT_CALLBACK_DATA);
+        keyboardButtonsRow.add(inlineKeyboardButton);
+
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow);
         inlineKeyboardMarkup.setKeyboard(rowList);
